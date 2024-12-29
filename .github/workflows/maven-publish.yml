@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       # Checkout the repository
       - name: Checkout Code
@@ -40,8 +40,6 @@ jobs:
         run: mvn clean install
 
       # Upload the WAR as an artifact using v4
-      - name: Upload WAR as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-app-war
-          path: target/hello-world-war-1.0.0.war
+      - name: Upload WAR file to Artifactory
+        run: |
+        curl -u "hhgsharish@gmail.com:cmVmdGtuOjAxOjE3NjcwMTQxOTg6MkpGS3RiQVhxMEhYNkRHbURxNWR5UWlHY2lR" -T "target/hello-world-war-1.0.0.war" "https://trialvvjw1c.jfrog.io/artifactory/my-hello-world-new-libs-snapshot/com/jfrog/my-jfrog-app/hello-world-war.war"
