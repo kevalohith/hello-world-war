@@ -17,7 +17,7 @@ pipeline {
                sh 'sudo scp /opt/jenkins/workspace/Pipeline6/target/hello-world-war-1.0.0.war root@172.31.13.101:/opt/tomcat/webapps/'
             }
         }
-  stage('deploy') {
+  stage('email') {
           steps {
     mail bcc: '', body: 'Hello World WAR Deployed Successfully', cc: '', from: 'Jenkins', replyTo: '', subject: 'Jenkins Notification', to: 'hhgsharish@gmail.com'
     }
