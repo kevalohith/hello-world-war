@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'slave' }
        stages 
     {
         stage('checkout') {             
@@ -14,4 +14,49 @@ pipeline {
             }
         }
     }
+
+    tools {
+        maven 'Maven-3.8.1' // Specify your Maven version if using Maven
+        jdk 'JDK11'         // Specify your JDK version
+    }
+    environment {
+        SONAR_TOKEN = credentials('sonarcloud-token') // Store token in Jenkins credentials
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'mvn clean install' // Adjust for your build tool
+            }
+        }
+        stage('SonarCloud Analysis') {
+            steps {
+                withSonarQubeEnv('SonarCloud') {
+                    sh '''
+                    mvn sonar:sonar \
+                      -Dsonar.projectKey=hhgsharish_hello-world-war \
+                      -Dsonar.organization=hhgsharish \
+                      -Dsonar.host.url=https://sonarcloud.io \
+                      -Dsonar.login=$SONAR_TOKEN
+                    '''
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                script {
+                    def qg = waitForQualityGate()
+                    if (qg.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${qg.status}"
+                    }
+                }
+            }
+        }
+    }
+
+
 }
