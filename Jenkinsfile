@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven-3.8.1' // Specify your Maven version if using Maven
+        maven 'Maven-3.4.0' // Specify your Maven version if using Maven
         jdk 'JDK11'         // Specify your JDK version
     }
     environment {
