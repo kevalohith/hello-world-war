@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven-3.4.0' // Specify your Maven version if using Maven
-        jdk 'JDK11'         // Specify your JDK version
-    }
+    //tools {
+     //   maven 'Maven-3.4.0' // Specify your Maven version if using Maven
+     //   jdk 'JDK11'         // Specify your JDK version
+    //}
     environment {
-        SONAR_TOKEN = credentials('sonarcloud-token') // Store token in Jenkins credentials
+        SONAR_TOKEN = credentials('SONAR_TOKEN') // Store token in Jenkins credentials
     }
     
        stages 
