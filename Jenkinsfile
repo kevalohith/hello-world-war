@@ -1,5 +1,13 @@
 pipeline {
-    agent { label 'slave' }
+    agent any
+    tools {
+        maven 'Maven-3.8.1' // Specify your Maven version if using Maven
+        jdk 'JDK11'         // Specify your JDK version
+    }
+    environment {
+        SONAR_TOKEN = credentials('sonarcloud-token') // Store token in Jenkins credentials
+    }
+    
        stages 
     {
         stage('checkout') {             
@@ -13,16 +21,7 @@ pipeline {
                 sh 'mvn clean package'
             }
         }
-    }
 
-    tools {
-        maven 'Maven-3.8.1' // Specify your Maven version if using Maven
-        jdk 'JDK11'         // Specify your JDK version
-    }
-    environment {
-        SONAR_TOKEN = credentials('sonarcloud-token') // Store token in Jenkins credentials
-    }
-    stages {
         stage('Checkout') {
             steps {
                 checkout scm
@@ -57,6 +56,6 @@ pipeline {
             }
         }
     }
+    }
 
-
-}
+   
