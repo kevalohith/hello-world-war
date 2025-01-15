@@ -42,13 +42,12 @@ pipeline {
             steps {
                 script {
                     echo "Restarting Tomcat to deploy WAR file..."
+        
+                    // Combine commands into one block to reduce the number of shell executions
                     sh """
-                        sudo cd /opt/apache-tomcat-10.1.34/bin
-                    """
-                    sh """
-                        ./shutdown.sh
+                        sudo /opt/apache-tomcat-10.1.34/bin/shutdown.sh
                         sleep 5
-                        ./startup.sh
+                        sudo /opt/apache-tomcat-10.1.34/bin/startup.sh
                     """
                 }
             }
