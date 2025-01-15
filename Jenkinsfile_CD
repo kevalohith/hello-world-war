@@ -15,13 +15,10 @@ pipeline {
                     // Using the credentials securely in the pipeline
                     withCredentials([usernamePassword(credentialsId: 'Artifactory_Credentials', usernameVariable: 'USERNAME', passwordVariable: 'API_KEY')]) {
                     
-                      def latestFileUri = sh(script: """
-                        curl -u ${USERNAME}:${API_KEY} "${ARTIFACTORY_URL}" | jq -r '.children | sort_by(.lastModified) | last | .uri'
-                      """, returnStdout: true).trim()
-
+                    
                       // Download the WAR file
                       sh """
-                        curl -u ${USERNAME}:${API_KEY} -O "${ARTIFACTORY_URL}${latestFileUri}"
+                        curl -u ${USERNAME}:${API_KEY} -O "http://3.109.183.150:8082/artifactory/hello-world-war-libs-release/com/jfrog/my-jfrog-app/hello-world-war-31.war"
                       """
 
                     
