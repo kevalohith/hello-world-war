@@ -32,7 +32,7 @@ pipeline {
                 script {
                     echo "Moving WAR file to Tomcat webapps directory..."
                     sh """
-                        mv your-app.war ${TOMCAT_WEBAPPS_DIR}/
+                        mv hello-world-war-31.war ${TOMCAT_WEBAPPS_DIR}/
                     """
                 }
             }
