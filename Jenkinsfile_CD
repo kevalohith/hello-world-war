@@ -43,7 +43,12 @@ pipeline {
                 script {
                     echo "Restarting Tomcat to deploy WAR file..."
                     sh """
-                        sudo systemctl restart tomcat
+                        sudo cd /opt/apache-tomcat-10.1.34/bin
+                    """
+                    sh """
+                        ./shutdown.sh
+                        sleep 5
+                        ./startup.sh
                     """
                 }
             }
