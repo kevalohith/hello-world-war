@@ -54,7 +54,7 @@ jobs:
           -Dsonar.organization=kevalohith \
           -Dsonar.branch.name=master
 
-    # Step 6: Wait for the SonarCloud Quality Gate and fail on failure
+    # Step 6: Wait for the SonarCloud Quality Gate and Fail on Failure
     - name: Wait for SonarCloud Quality Gate and Fail on Failure
       run: |
         response=$(curl -s -X GET -u "${{ secrets.SONAR_TOKEN }}:" \
