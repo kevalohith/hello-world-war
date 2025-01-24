@@ -32,7 +32,7 @@
 				<version>3.3.1</version>
 			</plugin>
 		</plugins>
-	<groupId>org.sonarsource.scanner.maven</groupId>
+	                        <groupId>org.sonarsource.scanner.maven</groupId>
 		      		<artifactId>sonar-maven-plugin</artifactId>
 		      		<version>3.9.0.1503</version>
 		    	</plugin>
@@ -40,7 +40,7 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.7</version>
-				<executions>
+				       <executions>
 					<execution>
 					  <id>default-prepare-agent</id>  <!-- Unique execution ID -->
 					  <phase>prepare-package</phase>
