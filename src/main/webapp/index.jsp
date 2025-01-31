@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Hello All From Jenkins World!</title>
+<title>Hello All!</title>
 </head>
 <body>
 	<h1>Good Evening All!</h1>
