@@ -10,25 +10,25 @@ pipeline {
         stage('checkout') {
             agent { label 'build-server'}
             steps {
-              checkoutStage()
+              checkoutstage-k()
             }
         }
          stage('build') {
              agent { label 'build-server'}
             steps {
-              buildStage()
+              buildstage-k()
                 }
             }
          stage('publish') { 
              agent { label 'build-server'}
             steps {
-              publishStage()
+              publishstage-k()
             }    
         }
        stage('deploy') {
            agent { label 'deployer'}
            steps {
-            deployStage(env.BUILD_NUMBER, '54.163.15.154')
+            deploystage-k(env.BUILD_NUMBER, '54.163.15.154')
            }
        }
     }   
