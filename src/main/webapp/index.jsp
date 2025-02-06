@@ -3,7 +3,7 @@
 <title>Hello All!</title>
 </head>
 <body>
-	<h1>Good Evening All!</h1>
+	<h1>Good Afternoon All!</h1>
         <h1>Welcome All!</h1>
         <h1>CICD Success!</h1> 
 	<p>
