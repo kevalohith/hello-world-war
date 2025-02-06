@@ -11,8 +11,8 @@
     <distributionManagement>
         <repository>
             <id>hello-world-war</id>
-            <name>jenkins-hello-world-libs-release</name>
-            <url>http://54.163.15.154:8082/artifactory/jenkins-hello-world-libs-release/com/efsavage/hello-world-war/com/efsavage/hello-world-war</url>
+            <name>jenkins-world-libs-release</name>
+            <url><url>http://54.163.15.154:8081/artifactory/jenkins-world-libs-release</url></url>
         </repository>
     </distributionManagement>
 
