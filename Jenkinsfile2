@@ -1,18 +1,11 @@
 pipeline {
-    agent { label params.NODE_LABEL }  
-
-    parameters {
-        string(name: 'NODE_LABEL', defaultValue: 'builder-node', description: 'Enter Builder Node label')
-    }
-
+    agent any
     stages {
-        stage('Setup Builder Node') {
+        stage('Get Builder Node IP') {
             steps {
                 script {
-                    def nodeIP = sh(script: "hostname -I | awk '{print $1}'", returnStdout: true).trim()
-                    echo "Node IP: ${nodeIP}"
-                    
-                    sh "ansible-playbook -i '${nodeIP},' -e 'target_ip=${nodeIP}' builder-node.yml"
+                    def builderNodeIP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
+                    echo "Builder Node IP: ${builderNodeIP}"
                 }
             }
         }
