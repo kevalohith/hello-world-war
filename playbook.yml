@@ -1,6 +1,6 @@
 ---
 - name: "configure build node"
-  hosts: "{{ target_ip }}"
+  hosts: "{{ target_ip | default('all') }}"
   become: yes
   tasks:
     - name: update package list
