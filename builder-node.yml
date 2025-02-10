@@ -1,0 +1,33 @@
+---
+- name: "configure build node"
+  hosts: "{{ target_ip }}"
+  become: yes
+  tasks:
+    - name: update package list
+      apt:
+        update_cache: yes
+
+    - name: install build essentials
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - git
+        state: present
+
+    - name: about jenkins user
+      user:
+        name: jenkins
+        state: present
+
+    - name: set permissions for jenkins
+      file:
+        path: /home/jenkins
+        state: directory
+        owner: jenkins
+        group: jenkins
+        mode: '0755'
+
+    - name: display success message
+      debug:
+        msg: "builder node setup completed on {{ target_ip }}"
