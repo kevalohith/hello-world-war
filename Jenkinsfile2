@@ -1,32 +1,52 @@
 pipeline {
-    agent { label params.NODE_LABEL }
+    agent any
 
-    parameters {
-        string(name: 'NODE_LABEL', defaultValue: 'builder-node', description: 'Enter the Builder Node label')
+    environment {
+        NODE_IP = '' // Initialize NODE_IP to prevent undefined errors
     }
 
     stages {
-       stage('Get Builder Node IP') {
-    steps {
-        script {
-            def nodeIP = sh(script: 'hostname -I | awk \'{print $1}\'', returnStdout: true).trim()
-            echo "Builder Node IP: ${nodeIP}"
+        stage('Checkout SCM') {
+            steps {
+                git url: 'https://github.com/kevalohith/hello-world-war.git', branch: 'master'
+            }
         }
-    }
-}
+
+        stage('Get Builder Node IP') {
+            steps {
+                script {
+                    env.NODE_IP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
+                    echo "Builder Node IP: ${env.NODE_IP}"
+                }
+            }
+        }
 
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/kevalohith/hello-world-war.git'
+                git url: 'https://github.com/kevalohith/hello-world-war.git', branch: 'master'
             }
         }
 
         stage('Run Ansible Playbook on Builder Node') {
             steps {
-                sh """
-                    ansible-playbook -i '${NODE_IP},' -e 'target_ip=${NODE_IP}' builder-node.yml --private-key ~/.ssh/id_rsa
-                """
+                script {
+                    echo "Running Ansible Playbook on ${env.NODE_IP}"
+                    
+                    // Example Ansible command (modify according to your setup)
+                    sh """
+                        ansible-playbook -i ${env.NODE_IP}, -u ubuntu /path/to/your/playbook.yml
+                    """
+                }
             }
+        }
+    }
+
+    post {
+        failure {
+            echo 'Build failed!'
+        }
+        success {
+            echo 'Build succeeded!'
         }
     }
 }
