@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                     echo "Running Ansible Playbook on ${env.NODE_IP}"
-                    sh "ansible-playbook -i ${env.NODE_IP}, -u ubuntu /home/ubuntu/jenkins/workspace/playbook/playbook.yml"
+                    sh "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${env.NODE_IP}, -u ubuntu /home/ubuntu/jenkins/workspace/playbook/playbook.yml"
                 }
             }
         }
