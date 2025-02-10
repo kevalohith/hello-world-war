@@ -6,15 +6,14 @@ pipeline {
     }
 
     stages {
-        stage('Get Builder Node IP') {
-            steps {
-                script {
-                    def ipAddress = sh(script: 'hostname -I | awk \'{print $1}\'', returnStdout: true).trim()
-                    echo "Builder Node IP Address: ${nodeIP}"
-                    env.NODE_IP = nodeIP
-                }
-            }
+       stage('Get Builder Node IP') {
+    steps {
+        script {
+            def nodeIP = sh(script: 'hostname -I | awk \'{print $1}\'', returnStdout: true).trim()
+            echo "Builder Node IP: ${nodeIP}"
         }
+    }
+}
 
         stage('Checkout Code') {
             steps {
