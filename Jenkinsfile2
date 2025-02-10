@@ -11,7 +11,7 @@ pipeline {
         stage('Get Builder Node IP') {
             steps {
                 script {
-                    def builder_ip = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
+                    env.NODE_IP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
                     echo "Builder Node IP: ${env.NODE_IP}"
                 }
             }
