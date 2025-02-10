@@ -1,31 +1,27 @@
 pipeline {
     agent any
+
     stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/kevalohith/hello-world-war.git'
+            }
+        }
+
         stage('Get Builder Node IP') {
             steps {
                 script {
-                    // Capture the IP address and store it in a variable
-                    nodeIP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
-                    echo "Builder Node IP: ${nodeIP}"
+                    env.NODE_IP = sh(script: "hostname -I | awk '{print \\$1}'", returnStdout: true).trim()
+                    echo "Builder Node IP: ${env.NODE_IP}"
                 }
             }
         }
-        
-        stage('Checkout Code') {
-            steps {
-                checkout scm
-            }
-        }
-        
+
         stage('Run Ansible Playbook on Builder Node') {
             steps {
                 script {
-                    if (nodeIP) {
-                        echo "Running Ansible Playbook on ${nodeIP}"
-                        sh "ansible-playbook -i ${nodeIP}, playbook.yml"
-                    } else {
-                        error "Failed to retrieve node IP"
-                    }
+                    echo "Running Ansible Playbook on ${env.NODE_IP}"
+                    sh "ansible-playbook -i ${env.NODE_IP}, -u ubuntu /home/ubuntu/jenkins/workspace/playbook/playbook.yml"
                 }
             }
         }
