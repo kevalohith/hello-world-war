@@ -1,52 +1,20 @@
 pipeline {
-    agent any
+    agent { label params.NODE_LABEL }  
 
-    environment {
-        NODE_IP = '' // Initialize NODE_IP to prevent undefined errors
+    parameters {
+        string(name: 'NODE_LABEL', defaultValue: 'builder-node', description: 'Enter Builder Node label')
     }
 
     stages {
-        stage('Checkout SCM') {
-            steps {
-                git url: 'https://github.com/kevalohith/hello-world-war.git', branch: 'master'
-            }
-        }
-
-        stage('Get Builder Node IP') {
+        stage('Setup Builder Node') {
             steps {
                 script {
-                    env.NODE_IP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
-                    echo "Builder Node IP: ${env.NODE_IP}"
-                }
-            }
-        }
-
-        stage('Checkout Code') {
-            steps {
-                git url: 'https://github.com/kevalohith/hello-world-war.git', branch: 'master'
-            }
-        }
-
-        stage('Run Ansible Playbook on Builder Node') {
-            steps {
-                script {
-                    echo "Running Ansible Playbook on ${env.NODE_IP}"
+                    def nodeIP = sh(script: "hostname -I | awk '{print $1}'", returnStdout: true).trim()
+                    echo "Node IP: ${nodeIP}"
                     
-                    // Example Ansible command (modify according to your setup)
-                    sh """
-                        ansible-playbook -i ${env.NODE_IP}, -u ubuntu /home/ubuntu/playbook.yml
-                    """
+                    sh "ansible-playbook -i '${nodeIP},' -e 'target_ip=${nodeIP}' builder-node.yml"
                 }
             }
-        }
-    }
-
-    post {
-        failure {
-            echo 'Build failed!'
-        }
-        success {
-            echo 'Build succeeded!'
         }
     }
 }
