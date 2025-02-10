@@ -34,7 +34,7 @@ pipeline {
                     
                     // Example Ansible command (modify according to your setup)
                     sh """
-                        ansible-playbook -i ${env.NODE_IP}, -u ubuntu /path/to/your/playbook.yml
+                        ansible-playbook -i ${env.NODE_IP}, -u ubuntu /home/ubuntu/playbook.yml
                     """
                 }
             }
