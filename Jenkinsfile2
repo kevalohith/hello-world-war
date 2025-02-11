@@ -1,22 +1,40 @@
 pipeline {
-    agent { label 'ansible' }  
-
+    agent any
+    parameters {
+        string(name: 'NODE_LABEL', defaultValue: 'agent', description: 'Label of the node')
+    }
+    environment {
+        GIT_URL = 'https://kevalohith:cmVmdGtuOjAxOjE3NzAzNzc2MDM6UGdFUnI3dXZxb1J5U2o2VkdwVGdmZHNoYnhs@github.com/kevalohith/hello-world-war.git'
+        BRANCH = 'master'
+    }
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://kevalohith:cmVmdGtuOjAxOjE3NzAzNzc2MDM6UGdFUnI3dXZxb1J5U2o2VkdwVGdmZHNoYnhs@github.com/kevalohith/hello-world-war.git'
+                git branch: "$BRANCH", url: "$GIT_URL"
             }
         }
-
+        stage('Set up Ansible') {
+            steps {
+                script {
+                    def nodeIP = ''
+                    if (params.NODE_LABEL == 'agent') {
+                        nodeIP = sh(script: "aws ec2 describe-instances --filters \"Name=tag:Name,Values=${params.NODE_LABEL}\" --query \"Reservations[*].Instances[*].PrivateIpAddress\" --output text", returnStdout: true).trim()
+                    }
+                    
+                    if (nodeIP) {
+                        sh "sed -i 's/REPLACE_WITH_IP/${nodeIP}/g' inventory.ini"
+                    } else {
+                        error 'Failed to retrieve node IP'
+                    }
+                }
+            }
+        }
         stage('Run Ansible Playbook') {
             steps {
                 ansiblePlaybook(
                     playbook: 'playbook.yml',
                     inventory: 'inventory.ini',
-                    credentialsId: 'ansible-ssh-key',
-                    extraVars: [
-                        target_ip: '3.88.226.118'
-                    ]
+                    extras: "-e ansible_python_interpreter=/usr/bin/python3"
                 )
             }
         }
