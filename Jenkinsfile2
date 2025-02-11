@@ -1,29 +1,20 @@
 pipeline {
-    agent any
-
-    parameters {
-        string(name: 'LABEL_NAME', defaultValue: 'agent', description: 'Node label where the playbook should run')
-    }
+    agent { label 'ansible' }  
 
     stages {
-        stage('Get Builder Node IP') {
-            agent { label params.LABEL_NAME }
+        stage('Checkout Code') {
             steps {
-                script {
-                    env.NODE_IP = sh(script: "hostname -I | awk '{print \$1}'", returnStdout: true).trim()
-                    echo "Builder Node IP: ${env.NODE_IP}"
-                }
+                git branch: 'master', url: 'https://github.com/kevalohith/hello-world-war.git'
             }
         }
 
-        stage('Run Ansible Playbook on Node') {
-            agent { label params.LABEL_NAME }
+        stage('Run Ansible Playbook') {
             steps {
-                script {
-                    echo "Running Ansible Playbook on ${env.NODE_IP}"
-                    sh "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${env.NODE_IP}, -u ubuntu --private-key=/home/ubuntu/.ssh/id_rsa playbook.yml"
-                }
+                ansiblePlaybook(
+                    playbook: 'playbook.yml',
+                    inventory: 'inventory.ini',
+                    credentialsId: 'ansible-ssh-key',
+                    extraVars: [target_ip: '3.88.226.118']
+                )
             }
         }
-    }
-}
