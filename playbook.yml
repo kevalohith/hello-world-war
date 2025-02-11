@@ -1,9 +1,14 @@
 ---
-- name: Configure Build Node
+- name: build process on ansible slave
   hosts: all
-  become: yes
+  become: true
   tasks:
-    - name: Ensure dependencies are installed
+    - name: Install dependencies 
       apt:
-        name: git
+        name:
+          - openjdk-17-jdk
+          - maven
+          - git
         state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
