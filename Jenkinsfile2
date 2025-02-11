@@ -4,22 +4,20 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/kevalohith/hello-world-war.git'
+                git branch: 'master', url: 'https://kevalohith:cmVmdGtuOjAxOjE3NzAzNzc2MDM6UGdFUnI3dXZxb1J5U2o2VkdwVGdmZHNoYnhs@github.com/kevalohith/hello-world-war.git'
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
-                script {
-                    ansiblePlaybook(
-                        playbook: 'playbook.yml',
-                        inventory: 'inventory.ini',
-                        credentialsId: 'ansible-ssh-key',
-                        extraVars: [
-                            target_ip: '3.88.226.118'
-                        ]
-                    )
-                }
+                ansiblePlaybook(
+                    playbook: 'playbook.yml',
+                    inventory: 'inventory.ini',
+                    credentialsId: 'ansible-ssh-key',
+                    extraVars: [
+                        target_ip: '3.88.226.118'
+                    ]
+                )
             }
         }
     }
