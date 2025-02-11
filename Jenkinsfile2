@@ -1,16 +1,35 @@
 pipeline {
     agent { label 'ansible' }
 
+    parameters {
+        string(name: 'target_ip', defaultValue: '', description: 'Target node IP')
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/kevalohith/hello-world-war.git'
+                checkout scm
+            }
+        }
+
+        stage('Prepare Inventory') {
+            steps {
+                script {
+                    if (!params.target_ip) {
+                        error "ERROR: target_ip parameter is required!"
+                    }
+                    sh """
+                    echo '[webserver]' > inventory.ini
+                    echo '${params.target_ip} ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/id_rsa' >> inventory.ini
+                    cat inventory.ini
+                    """
+                }
             }
         }
 
         stage('Run Ansible Playbook') {
             steps {
-                sh 'ansible-playbook -i inventory.ini playbook.yml --extra-vars "target_ip=3.88.226.118"'
+                sh "ansible-playbook -i inventory.ini playbook.yml"
             }
         }
     }
