@@ -10,11 +10,17 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                ansiblePlaybook(
-                    playbook: 'playbook.yml',
-                    inventory: 'inventory.ini',
-                    credentialsId: 'ansible-ssh-key',
-                    extraVars: [target_ip: '3.88.226.118']
-                )
+                script {
+                    ansiblePlaybook(
+                        playbook: 'playbook.yml',
+                        inventory: 'inventory.ini',
+                        credentialsId: 'ansible-ssh-key',
+                        extraVars: [
+                            target_ip: '3.88.226.118'
+                        ]
+                    )
+                }
             }
         }
+    }
+}
