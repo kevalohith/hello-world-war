@@ -19,7 +19,7 @@ pipeline {
 		stage('publish') {
 			steps {
 				sh """
-				docker login
+				docker login -u kevalohith -p DevOps123 https://hub.docker.com/repositories/kevalohith
 				docker tag tomcat:v1 kevalohith/tomcat:v1
 				docker push kevalohith/tomcat:v1
 				"""
