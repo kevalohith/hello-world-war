@@ -12,7 +12,7 @@ pipeline {
 		
 		stage('docker build') {
 			steps {
-				sh 'docker build -t tomcat:t1 .'
+				sh 'docker build -t tomcat:v1 .'
 			}
 		}
 		
@@ -20,7 +20,7 @@ pipeline {
 			steps {
 				sh """
 				docker login
-				docker tag tomcat:t1 kevalohith/tomcat:v1
+				docker tag tomcat:v1 kevalohith/tomcat:v1
 				docker push kevalohith/tomcat:v1
 				"""
 			}
@@ -30,9 +30,9 @@ pipeline {
 			agent { label 'deployer' }
 			steps {
 				sh """
-				docker login -u supriyabs -p 123@docker https://hub.docker.com/repository/docker/supriyabs/tomcat/general
-				docker pull supriyabs/tomcat:t1
-				docker run -t -p 8080:8080 supriyabs/tomcat:t1
+				docker login -u kevalohith -p DevOps123 https://hub.docker.com/repositories/kevalohith
+				docker pull kevalohith/tomcat:v1
+				docker run -t -p 8080:8080 kevalohith/tomcat:v1
 				"""
 			}
 		}
