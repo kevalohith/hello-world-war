@@ -30,7 +30,7 @@ pipeline {
 			agent { label 'deployer' }
 			steps {
 				sh """
-				docker login -u kevalohith -p DevOps123 https://hub.docker.com/repositories/kevalohith
+				docker login -u kevalohith -p DevOps123
 				docker pull kevalohith/tomcat:v1
 				docker run -t -p 8090:8080 kevalohith/tomcat:v1
 				"""
