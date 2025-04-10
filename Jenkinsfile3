@@ -32,7 +32,7 @@ pipeline {
 				sh """
 				docker login -u kevalohith -p DevOps123 https://hub.docker.com/repositories/kevalohith
 				docker pull kevalohith/tomcat:v1
-				docker run -t -p 8080:8080 kevalohith/tomcat:v1
+				docker run -t -p 8090:8080 kevalohith/tomcat:v1
 				"""
 			}
 		}
