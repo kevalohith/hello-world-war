@@ -27,7 +27,7 @@ pipeline {
 		}
 		
 		stage('deploy') {
-			agent { label 'Built-In Node' }
+			agent { label 'master' }
 			steps {
 				sh """
 				docker login -u kevalohith -p DevOps123 https://hub.docker.com/repositories/kevalohith
